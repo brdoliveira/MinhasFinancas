@@ -1,11 +1,11 @@
 import 'bootswatch/dist/flatly/bootstrap.css'
 import './custom.css'
-import Login from './views/Login';
+import CadastroUsuario from './views/CadastroUsuario';
 
 function App() {
   return (
     <div className="App">
-      <Login/>
+      <CadastroUsuario/>
     </div>
   );
 }
