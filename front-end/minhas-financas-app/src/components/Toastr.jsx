@@ -22,7 +22,7 @@ export function mostrarMensagem(titulo, mensagem, tipo) {
   toastr[tipo](mensagem, titulo);
 }
 
-export function mensagemError(mensagem) {
+export function mensagemErro(mensagem) {
   mostrarMensagem("Erro", mensagem, "error");
 }
 

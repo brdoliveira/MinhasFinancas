@@ -1,10 +1,10 @@
 import React from "react";
-import Card from "../components/card";
-import FormGroup from "../components/form-group";
+import Card from "../components/Card";
+import FormGroup from "../components/FormGroup";
 
 import UsuarioService from "../app/service/usuarioService";
 import LocalStorageService from "../app/service/localstorageService";
-import { mensagemErro } from "../components/toastr";
+import { mensagemErro } from "../components/Toastr";
 
 class Login extends React.Component {
   state = {

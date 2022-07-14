@@ -4,7 +4,7 @@ import Card from "../components/Card";
 import FormGroup from "../components/FormGroup";
 
 import UsuarioService from "../app/service/usuarioService";
-import { mensagemSucesso, mensagemErro } from "../components/toastr";
+import { mensagemSucesso, mensagemErro } from "../components/Toastr";
 
 class CadastroUsuario extends React.Component {
   state = {
