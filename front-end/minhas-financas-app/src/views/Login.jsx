@@ -1,7 +1,10 @@
 import React from "react";
-import Card from "../components/Card";
-import FormGroup from "../components/FormGroup";
-import axios from 'axios';
+import Card from "../components/card";
+import FormGroup from "../components/form-group";
+
+import UsuarioService from "../app/service/usuarioService";
+import LocalStorageService from "../app/service/localstorageService";
+import { mensagemErro } from "../components/toastr";
 
 class Login extends React.Component {
   state = {
@@ -9,21 +12,29 @@ class Login extends React.Component {
     senha: "",
   };
 
+  constructor() {
+    super();
+    this.service = new UsuarioService();
+  }
+
   entrar = () => {
-    axios
-    .post('http://localhost:8080/api/usuarios/autenticar',{
-      email: this.props.email,
-      senha: this.props.senha
-    }).then(response=>{
-      console.log("response = ",response)
-    }).catch(erro =>{
-      console.log("erro = ",erro)
-    })
+    this.service
+      .autenticar({
+        email: this.state.email,
+        senha: this.state.senha,
+      })
+      .then((response) => {
+        LocalStorageService.adicionarItem("_usuario_logado", response.data);
+        this.props.history.push("/home");
+      })
+      .catch((erro) => {
+        mensagemErro(erro.response.data);
+      });
   };
 
   prepareCadastrar = () => {
-    window.location.href = '/cadastro-usuarios'
-  }
+    window.location.href = "/cadastro-usuarios";
+  };
 
   render() {
     return (
@@ -70,7 +81,12 @@ class Login extends React.Component {
                       <button onClick={this.entrar} className="btn btn-success">
                         Entrar
                       </button>
-                      <button onClick={this.prepareCadastrar} className="btn btn-danger">Cadastrar</button>
+                      <button
+                        onClick={this.prepareCadastrar}
+                        className="btn btn-danger"
+                      >
+                        Cadastrar
+                      </button>
                     </fieldset>
                   </div>
                 </div>

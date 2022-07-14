@@ -3,6 +3,9 @@ import React from "react";
 import Card from "../components/Card";
 import FormGroup from "../components/FormGroup";
 
+import UsuarioService from "../app/service/usuarioService";
+import { mensagemSucesso, mensagemErro } from "../components/toastr";
+
 class CadastroUsuario extends React.Component {
   state = {
     nome: "",
@@ -11,13 +14,39 @@ class CadastroUsuario extends React.Component {
     senhaRepeticao: "",
   };
 
+  constructor() {
+    super();
+    this.service = new UsuarioService();
+  }
+
   cadastrar = () => {
-    console.log(this.state);
+    const { nome, email, senha, senhaRepeticao } = this.state;
+    const usuario = { nome, email, senha, senhaRepeticao };
+
+    try {
+      this.service.validar(usuario);
+    } catch (erro) {
+      const msgs = erro.mensagens;
+      msgs.forEach((msg) => mensagemErro(msg));
+      return false;
+    }
+
+    this.service
+      .salvar(usuario)
+      .then((response) => {
+        mensagemSucesso(
+          "Usuário cadastrado com sucesso! Faça o login para acessar o sistema."
+        );
+        window.location.href = "/login";
+      })
+      .catch((error) => {
+        mensagemErro(error.response.data);
+      });
   };
 
   cancelar = () => {
-    window.location.href = '/login'
-  }
+    window.location.href = "/login";
+  };
 
   render() {
     return (
@@ -70,7 +99,11 @@ class CadastroUsuario extends React.Component {
               >
                 Salvar
               </button>
-              <button type="button" className="btn btn-danger" onClick={this.cancelar}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={this.cancelar}
+              >
                 Cancelar
               </button>
             </div>
