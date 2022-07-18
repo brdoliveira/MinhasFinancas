@@ -7,60 +7,63 @@ import LancamentosTable from "./LancamentosTable";
 import LancamentoService from "../../app/service/lancamentoService";
 import LocalStorageService from "../../app/service/localstorageService";
 
+import * as messages from "../../components/Toastr";
+
 class ConsultaLancamentos extends React.Component {
   state = {
     ano: "",
     mes: "",
     tipo: "",
-    lancamentos: []
+    descricao: "",
+    lancamentos: [],
   };
 
-  constructor(){
+  constructor() {
     super();
     this.service = new LancamentoService();
   }
 
   buscar = () => {
-    const usuarioLogado = LocalStorageService.obterItem('_usuario_logado')
+    if (this.state.ano) {
+      messages.mensagemErro("O preenchimento do campo Ano é obrigatório.");
+      return false;
+    }
+
+    const usuarioLogado = LocalStorageService.obterItem("_usuario_logado");
 
     const lancamentoFiltro = {
       ano: this.state.ano,
       mes: this.state.mes,
       tipo: this.state.tipo,
-      usuario: usuarioLogado.id
-    }
+      descricao: this.state.descricao,
+      usuario: usuarioLogado.id,
+    };
 
     this.service
-        .consultar(lancamentoFiltro)
-        .then(resposta => {
-          this.setState({lancamentos: resposta.data})
-        }).catch(error =>{
-          console.log(error)
-        })
+      .consultar(lancamentoFiltro)
+      .then((resposta) => {
+        this.setState({ lancamentos: resposta.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  editar = (id) => {
+    console.log(id);
+  };
+
+  deletar = (id) => {
+    this.service.deletar(id).then(response => {
+      messages.mensagemSucesso('Lançamento deletado com sucesso!')
+    }).catch(error => {
+      messages.mensagemErro('Ocorreu um error ao tentar deletar o lancamento')
+    })
   };
 
   render() {
-    const meses = [
-      { label: "Selecione...", value: "" },
-      { label: "Janeiro", value: 1 },
-      { label: "Fevereiro", value: 2 },
-      { label: "Março", value: 3 },
-      { label: "Abril", value: 4 },
-      { label: "Maio", value: 5 },
-      { label: "Junho", value: 6 },
-      { label: "Julho", value: 7 },
-      { label: "Agosto", value: 8 },
-      { label: "Setembro", value: 9 },
-      { label: "Outubro", value: 10 },
-      { label: "Novembro", value: 11 },
-      { label: "Dezembro", value: 12 },
-    ];
-
-    const tipos = [
-      { label: "Selecione...", value: "" },
-      { label: "Despesa", value: "DESPESA" },
-      { label: "Receita", value: "RECEITA" },
-    ];
+    const meses = this.service.obterListaMeses();
+    const tipos = this.service.obterListaTipos();
 
     return (
       <Card title="Consulta Lançamentos">
@@ -77,7 +80,7 @@ class ConsultaLancamentos extends React.Component {
                   placeholder="digite o ano ..."
                 />
               </FormGroup>
-              <FormGroup label="Mês: *" htmlFor="inputMes">
+              <FormGroup label="Mês:" htmlFor="inputMes">
                 <SelectMenu
                   id="inputMes"
                   value={this.state.mes}
@@ -86,7 +89,17 @@ class ConsultaLancamentos extends React.Component {
                   lista={meses}
                 />
               </FormGroup>
-              <FormGroup label="Tipo: *" htmlFor="inputTipo">
+              <FormGroup label="Descrição:" htmlFor="inputDesc">
+                <input
+                  className="form-control"
+                  type="name"
+                  id="inputDesc"
+                  value={this.state.descricao}
+                  onChange={(e) => this.setState({ descricao: e.target.value })}
+                  placeholder="digite a descricao ..."
+                />
+              </FormGroup>
+              <FormGroup label="Tipo:" htmlFor="inputTipo">
                 <SelectMenu
                   id="inputTipo"
                   value={this.state.tipo}
@@ -95,16 +108,6 @@ class ConsultaLancamentos extends React.Component {
                   lista={tipos}
                 />
               </FormGroup>
-              <button
-                type="button"
-                onClick={this.buscar}
-                className="btn btn-success"
-              >
-                Buscar
-              </button>
-              <button type="button" className="btn btn-danger">
-                Cadastrar
-              </button>
             </div>
           </div>
         </div>
@@ -112,7 +115,11 @@ class ConsultaLancamentos extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <div className="bs-component">
-              <LancamentosTable lancamentos={this.state.lancamentos} />
+              <LancamentosTable
+                lancamentos={this.state.lancamentos}
+                deleteAction={this.deletar}
+                editAction={this.editar}
+              />
             </div>
           </div>
         </div>
