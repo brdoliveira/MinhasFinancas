@@ -56,7 +56,7 @@ class ConsultaLancamentos extends React.Component {
   };
 
   editar = (id) => {
-    console.log(id);
+    window.location.href(`/cadastro-lancamento/${id}`);
   };
 
   abrirConfirmacao = (lancamento) => {
@@ -83,6 +83,10 @@ class ConsultaLancamentos extends React.Component {
           "Ocorreu um error ao tentar deletar o lancamento"
         );
       });
+  };
+
+  preparaFormularioCadastro = () => {
+    window.location.href = "/cadastro-lancamentos";
   };
 
   render() {
@@ -144,6 +148,20 @@ class ConsultaLancamentos extends React.Component {
                   lista={tipos}
                 />
               </FormGroup>
+              <button
+                onClick={this.buscar}
+                type="button"
+                className="btn btn-success"
+              >
+                Buscar
+              </button>
+              <button
+                onClick={this.preparaFormularioCadastro}
+                type="button"
+                className="btn btn-danger"
+              >
+                Cadastrar
+              </button>
             </div>
           </div>
         </div>
