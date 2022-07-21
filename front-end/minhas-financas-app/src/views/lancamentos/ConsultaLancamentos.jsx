@@ -48,7 +48,11 @@ class ConsultaLancamentos extends React.Component {
     this.service
       .consultar(lancamentoFiltro)
       .then((resposta) => {
-        this.setState({ lancamentos: resposta.data });
+        const lista = resposta.data;
+        if(lista.length < 1){
+          messages.mensagemAlert("Nenhum resultado encontrad0.")
+        }
+        this.setState({ lancamentos: lista });
       })
       .catch((error) => {
         console.log(error);
@@ -87,6 +91,21 @@ class ConsultaLancamentos extends React.Component {
 
   preparaFormularioCadastro = () => {
     window.location.href = "/cadastro-lancamentos";
+  };
+
+  alterarStatus = (lancamento, status) => {
+    this.service.alterarStatus(lancamento.id, status).then((response) => {
+      const lancamentos = this.state.lancamentos;
+      const index = lancamentos.indexOf(lancamento);
+
+      if (index !== -1) {
+        lancamento["status"] = status;
+        lancamento[index] = lancamento;
+        this.setState({ lancamento });
+      }
+
+      messages.mensagemSucesso("Status atualizado com sucesso.");
+    });
   };
 
   render() {
@@ -153,6 +172,7 @@ class ConsultaLancamentos extends React.Component {
                 type="button"
                 className="btn btn-success"
               >
+                <i className="pi pi-search"></i>
                 Buscar
               </button>
               <button
@@ -160,6 +180,7 @@ class ConsultaLancamentos extends React.Component {
                 type="button"
                 className="btn btn-danger"
               >
+                <i className="pi pi-plus"></i>
                 Cadastrar
               </button>
             </div>
