@@ -42,7 +42,7 @@ class ConsultaLancamentos extends React.Component {
       mes: this.state.mes,
       tipo: this.state.tipo,
       descricao: this.state.descricao,
-      usuario: usuarioLogado.id,
+      usuario: usuarioLogado.id
     };
 
     this.service
@@ -74,7 +74,7 @@ class ConsultaLancamentos extends React.Component {
   deletar = () => {
     this.service
       .deletar(this.state.lancamentoDeletar.id)
-      .then((response) => {
+      .then(() => {
         const lancamentos = this.state.lancamentos;
         const index = lancamentos.indexOf(this.state.lancamentoDeletar);
         lancamentos.splice(index, 1);
@@ -82,7 +82,7 @@ class ConsultaLancamentos extends React.Component {
 
         messages.mensagemSucesso("Lançamento deletado com sucesso!");
       })
-      .catch((error) => {
+      .catch(() => {
         messages.mensagemErro(
           "Ocorreu um error ao tentar deletar o lancamento"
         );

@@ -3,8 +3,8 @@ import Card from "../components/Card";
 import FormGroup from "../components/FormGroup";
 
 import UsuarioService from "../app/service/usuarioService";
-import LocalStorageService from "../app/service/localstorageService";
 import { mensagemErro } from "../components/Toastr";
+import { AuthContext } from "../main/provedorAutenticacao"
 
 class Login extends React.Component {
   state = {
@@ -24,7 +24,7 @@ class Login extends React.Component {
         senha: this.state.senha,
       })
       .then((response) => {
-        LocalStorageService.adicionarItem("_usuario_logado", response.data);
+        this.context.iniciarSessao(response.data)
         this.props.history.push("/home");
       })
       .catch((erro) => {
@@ -40,7 +40,7 @@ class Login extends React.Component {
     return (
       <div className="row">
         <div
-          className="col-md-6"
+          className="col-md-6 offset-md-3"
           style={{ position: "relative", left: "300px" }}
         >
           <div className="bs-docs-section">
@@ -101,4 +101,5 @@ class Login extends React.Component {
   }
 }
 
+Login.contextType = AuthContext;
 export default Login;

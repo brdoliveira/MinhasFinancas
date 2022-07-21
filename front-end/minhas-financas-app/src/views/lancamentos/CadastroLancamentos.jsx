@@ -66,7 +66,7 @@ class CadastroLancamentos extends React.Component {
 
     this.service
       .salvar(lancamento)
-      .then((response) => {
+      .then(() => {
         window.location.href = "/consulta-lancamentos";
         messages.mensagemSucesso("Lançamento cadastrado com sucesso !");
       })
@@ -76,8 +76,6 @@ class CadastroLancamentos extends React.Component {
   };
 
   atualizar = () => {
-    const usuarioLogado = LocalStorageService.obterItem("_usuario_logado");
-
     const { descricao, valor, mes, ano, tipo, status, id, usuario } =
       this.state;
     const lancamento = {
@@ -93,7 +91,7 @@ class CadastroLancamentos extends React.Component {
 
     this.service
       .atualizar(lancamento)
-      .then((response) => {
+      .then(() => {
         window.location.href = "/consulta-lancamentos";
         messages.mensagemSucesso("Lançamento atualizado com sucesso !");
       })
@@ -212,7 +210,7 @@ class CadastroLancamentos extends React.Component {
             )}
             <button
               className="btn btn-danger"
-              onClick={(e) => (window.location.href = "/consulta-lancamentos")}
+              onClick={() => (window.location.href = "/consulta-lancamentos")}
             >
                 <i className="pi pi-times"></i>
               Cancelar

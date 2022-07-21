@@ -17,7 +17,7 @@ export default (props) => {
             className="btn btn-success"
             title="Efetivar"
             disabled={lancamento.status !== ""}
-            onClick={(e) => props.alterarStatus(lancamento, "EFETIVADO")}
+            onClick={() => props.alterarStatus(lancamento, "EFETIVADO")}
             type="button"
           >
             <i className="pi pi-check"></i>
@@ -26,7 +26,7 @@ export default (props) => {
             className="btn btn-warning"
             title="Cancelar"
             disabled={lancamento.status !== ""}
-            onClick={(e) => props.alterarStatus(lancamento, "CANCELADO")}
+            onClick={() => props.alterarStatus(lancamento, "CANCELADO")}
             type="button"
           >
             <i className="pi pi-times"></i>
@@ -35,7 +35,7 @@ export default (props) => {
             type="button"
             title="Editar"
             className="btn btn-primary"
-            onClick={(e) => props.editAction(lancamento.id)}
+            onClick={() => props.editAction(lancamento.id)}
           >
             <i className="pi pi-pencil"></i>
           </button>
@@ -43,7 +43,7 @@ export default (props) => {
             type="button"
             title="Excluir"
             className="btn btn-danger"
-            onClick={(e) => props.deleteAction(lancamento)}
+            onClick={() => props.deleteAction(lancamento)}
           >
             <i className="pi pi-trash"></i>
           </button>

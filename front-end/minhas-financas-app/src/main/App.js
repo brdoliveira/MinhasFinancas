@@ -2,6 +2,7 @@ import React from 'react';
 
 import Rotas from './rotas'
 import Navbar from '../components/Navbar'
+import ProvedorAutenticacao from './provedorAutenticacao';
 
 import 'toastr/build/toastr.min'
 
@@ -16,12 +17,12 @@ import 'primeicons/primeicons.css'
 function App() {
   return (
     <div className="App">
-      <>
+      <ProvedorAutenticacao>
         <Navbar />
         <div className="container">
           <Rotas />
         </div>
-      </>
+      </ProvedorAutenticacao>
     </div>
   );
 }
