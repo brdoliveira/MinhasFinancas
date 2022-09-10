@@ -35,7 +35,9 @@ UTILIZAMOS:
 
 - Toastr
 
-- AxiosJWT
+- Axios
+
+- JWT
 
 <br>
 <h2>🧐 Autor</h2>
